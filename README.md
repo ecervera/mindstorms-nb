@@ -11,15 +11,15 @@ The NXT runs its standard firmware, but the EV3 should run the
 
 ## Prerequisites
 
-* Global
-  * Python 3.x
-  * [Jupyter notebook](http://jupyter.readthedocs.io/en/latest/install.html)
 * NXT
   * [PyBluez](https://github.com/karulis/pybluez)
   * [NXT-Python](https://github.com/Eelviny/nxt-python)
 * EV3
   * [ev3dev](http://www.ev3dev.org/)
   * [RPyC](http://ev3dev-lang-python.readthedocs.io/en/latest/rpyc.html)
+* Computer
+  * Python 3.x
+  * [Jupyter notebook](http://jupyter.readthedocs.io/en/latest/install.html)
 
 ## Setup
 
@@ -38,13 +38,14 @@ Activate Bluetooth and pair your robot and computer.
 We recommend using Miniconda and creating an environment:
 
 * [Conda quick install](http://conda.pydata.org/docs/install/quick.html)
-* `conda create --name py35 python=3.5`
-* `source activate py35`
-* `conda install jupyter matplotlib`
-* NXT:
+  * `conda create --name py34 python=3.4.2`
+  * `source activate py34`
+  * `conda install jupyter matplotlib`
+* If using a NXT:
+  * `pip pybluez`
   * Install [NXT-python](https://github.com/Eelviny/nxt-python)
-* EV3:
-  * `conda install rpyc`
+* If using an EV3:
+  * `pip install rpyc`
 
 ## Usage
 
