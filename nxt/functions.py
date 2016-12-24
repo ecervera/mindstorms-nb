@@ -5,13 +5,18 @@ from bluetooth.btcommon import BluetoothError
 
 def connect(n):
     global brick
-    global mB
-    global mC
+    global mB; global mC
+    global s1; global s2; global s3; global s4
     try:
         address = {5: '00:16:53:08:D5:59', 12: '00:16:53:1A:C6:BD'}
         brick = nxt.bluesock.BlueSock(address[n]).connect()
         mB = nxt.motor.Motor(brick, nxt.motor.PORT_B)
         mC = nxt.motor.Motor(brick, nxt.motor.PORT_C)
+        s1 = nxt.sensor.Touch(brick, nxt.sensor.PORT_1)
+        s2 = nxt.sensor.Sound(brick, nxt.sensor.PORT_2)
+        s3 = nxt.sensor.Light(brick, nxt.sensor.PORT_3)
+        s3.set_illuminated(True)
+        s4 = nxt.sensor.Ultrasonic(brick, nxt.sensor.PORT_4)
     except BluetoothError as e:
         errno, errmsg = eval(e.args[0])
         if errno==16:
@@ -30,15 +35,7 @@ def disconnect():
         brick.sock.close()
     except NameError:
         print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
-'''
-def forward():
-    mB.run(-100)
-    mC.run(100)
-    
-def backward():
-    mB.run(100)
-    mC.run(-100)
-'''
+
 def stop():
     mB.brake()
     mC.brake()
@@ -70,4 +67,15 @@ def move(speed_B=0,speed_C=0):
         mC.run(int(speed_C*max_speed/100))
     except NameError:
         print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
-  
+
+def touch():
+    return s1.is_pressed()
+    
+def sound():
+    return s2.get_loudness()
+
+def light():
+    return s3.get_lightness()
+
+def ultrasonic():
+    return s4.get_distance()
