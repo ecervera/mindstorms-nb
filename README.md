@@ -42,7 +42,7 @@ We recommend using Miniconda and creating an environment:
   * `source activate py34`
   * `conda install jupyter matplotlib`
 * If using a NXT:
-  * `pip pybluez`
+  * `pip install pybluez`
   * Install [NXT-python](https://github.com/Eelviny/nxt-python)
 * If using an EV3:
   * `pip install rpyc`

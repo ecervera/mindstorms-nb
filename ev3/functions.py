@@ -3,17 +3,26 @@ import rpyc
 def connect(n):
     global conn
     global ev3
-    global mB
-    global mC
+    global mB; global mC
+    global ts; global gy; global us; global cl
     try:
         address = {1: '192.168.1.27'}
         conn = rpyc.classic.connect(address[n]) 
         ev3 = conn.modules['ev3dev.ev3']
         mB = ev3.LargeMotor('outB')
         mC = ev3.LargeMotor('outC')
+        ts = ev3.TouchSensor()
+        gy = ev3.GyroSensor()
+        gy.mode='GYRO-ANG'
+        us = ev3.UltrasonicSensor()
+        us.mode='US-DIST-CM'
+        cl = ev3.ColorSensor()
+        cl.mode='COL-REFLECT'
         print("\x1b[32mRobot %d connectat.\x1b[0m" % n)
     except KeyError:
         print("\x1b[31mNúmero de robot incorrecte.\x1b[0m")
+    except ConnectionRefusedError:
+        print("\x1b[31mNo es pot connectar amb el robot.\x1b[0m")
 
 def stop():
     try:
@@ -50,3 +59,14 @@ def move(speed_B=0,speed_C=0):
     except NameError:
         print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
     
+def touch():
+    return ts.value()
+
+def gyro():
+    return gy.value()
+
+def ultrasonic():
+    return us.value()/10
+
+def light():
+    return cl.value()
