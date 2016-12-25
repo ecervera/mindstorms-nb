@@ -1,12 +1,16 @@
 import nxt.bluesock
 import nxt.motor
 
+import math
+import time
+
 from bluetooth.btcommon import BluetoothError
 
 def connect(n):
     global brick
     global mB; global mC
     global s1; global s2; global s3; global s4
+    global tempo
     try:
         address = {5: '00:16:53:08:D5:59', 12: '00:16:53:1A:C6:BD'}
         brick = nxt.bluesock.BlueSock(address[n]).connect()
@@ -17,6 +21,7 @@ def connect(n):
         s3 = nxt.sensor.Light(brick, nxt.sensor.PORT_3)
         s3.set_illuminated(True)
         s4 = nxt.sensor.Ultrasonic(brick, nxt.sensor.PORT_4)
+        tempo = 0.5
         print("\x1b[32mRobot %d connectat.\x1b[0m" % n)
     except BluetoothError as e:
         errno, errmsg = eval(e.args[0])
@@ -86,68 +91,13 @@ def ultrasonic():
 
 def play_sound(s):
     brick.play_sound_file(False, bytes((s+'.rso').encode('ascii')))
-    
-def click():
-    play_sound('! Click')
-    
-def startup():
-    play_sound('! Startup')
-
-def error():
-    play_sound('! Error 02')
-
-def applause():
-    play_sound('! Applause')
-
-def arm():
-    play_sound('! Arm 09')
-
-def attention():
-    play_sound('! Attention')
 
 def say(s):
     play_sound(s)
-        
-def hello():
-    say('Hello')
-        
-def youre_good():
-    say("You're Good")
-        
-def good_job():
-    say('Good Job')
-        
-def have_a_nice_day():
-    say('Have A Nice Day')
-        
-def hot():
-    say('Hot')
-        
-def thank_you():
-    say('Thank You')
-        
-def woops():
-    say('Woops')
-    
-def game_over():
-    say('Game Over')
-        
-def sorry():
-    say('Sorry')
-        
-def object_detected():
-    say('Object Detected')
-        
-def music():
-    say('Music')
-        
-def system_overload():
-    say('System Overload')
-        
-def buuuhh():
-    say('Buuuhh')
-        
-def green():
-    say('Green')
-    
-    
+
+def play_tone(f,t):
+    try:
+        brick.play_tone_and_wait(f, int(t*1000*tempo))
+        time.sleep(0.01)
+    except:
+        pass

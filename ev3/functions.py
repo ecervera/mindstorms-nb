@@ -5,6 +5,8 @@ def connect(n):
     global ev3
     global mB; global mC
     global ts; global gy; global us; global cl
+    global snd
+    global tempo
     try:
         address = {1: '192.168.1.27'}
         conn = rpyc.classic.connect(address[n]) 
@@ -18,6 +20,8 @@ def connect(n):
         us.mode='US-DIST-CM'
         cl = ev3.ColorSensor()
         cl.mode='COL-REFLECT'
+        snd = ev3.Sound()
+        tempo = 0.25
         print("\x1b[32mRobot %d connectat.\x1b[0m" % n)
     except KeyError:
         print("\x1b[31mNúmero de robot incorrecte.\x1b[0m")
@@ -70,3 +74,12 @@ def ultrasonic():
 
 def light():
     return cl.value()
+
+def beep():
+    snd.beep()
+    
+def play_tone(f,t):
+    snd.tone(f,int(t*1000*tempo)).wait()
+    
+def speak(s):
+    snd.speak(s).wait()
