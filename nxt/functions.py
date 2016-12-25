@@ -17,10 +17,11 @@ def connect(n):
         s3 = nxt.sensor.Light(brick, nxt.sensor.PORT_3)
         s3.set_illuminated(True)
         s4 = nxt.sensor.Ultrasonic(brick, nxt.sensor.PORT_4)
+        print("\x1b[32mRobot %d connectat.\x1b[0m" % n)
     except BluetoothError as e:
         errno, errmsg = eval(e.args[0])
         if errno==16:
-            print("\x1b[31mNo es pot connectar, ja hi ha un altre programa. Has de desconnectar-lo abans!\x1b[0m")
+            print("\x1b[31mNo es pot connectar, hi ha un altre programa ocupant la connexió.\x1b[0m")
         elif errno==13:
             print("\x1b[31mNo es pot connectar, el dispositiu no està emparellat.\x1b[0m")
         elif errno == 112:
@@ -37,8 +38,11 @@ def disconnect():
         print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
 
 def stop():
-    mB.brake()
-    mC.brake()
+    try:
+        mB.brake()
+        mC.brake()
+    except NameError:
+        print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
 
 def forward(speed=100,speed_B=100,speed_C=100):
     move(speed_B=min(abs(speed),abs(speed_B)),speed_C=min(abs(speed),abs(speed_C)))
@@ -79,3 +83,71 @@ def light():
 
 def ultrasonic():
     return s4.get_distance()
+
+def play_sound(s):
+    brick.play_sound_file(False, bytes((s+'.rso').encode('ascii')))
+    
+def click():
+    play_sound('! Click')
+    
+def startup():
+    play_sound('! Startup')
+
+def error():
+    play_sound('! Error 02')
+
+def applause():
+    play_sound('! Applause')
+
+def arm():
+    play_sound('! Arm 09')
+
+def attention():
+    play_sound('! Attention')
+
+def say(s):
+    play_sound(s)
+        
+def hello():
+    say('Hello')
+        
+def youre_good():
+    say("You're Good")
+        
+def good_job():
+    say('Good Job')
+        
+def have_a_nice_day():
+    say('Have A Nice Day')
+        
+def hot():
+    say('Hot')
+        
+def thank_you():
+    say('Thank You')
+        
+def woops():
+    say('Woops')
+    
+def game_over():
+    say('Game Over')
+        
+def sorry():
+    say('Sorry')
+        
+def object_detected():
+    say('Object Detected')
+        
+def music():
+    say('Music')
+        
+def system_overload():
+    say('System Overload')
+        
+def buuuhh():
+    say('Buuuhh')
+        
+def green():
+    say('Green')
+    
+    
