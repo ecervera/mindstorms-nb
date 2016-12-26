@@ -68,8 +68,14 @@ def move(speed_B=0,speed_C=0):
     if speed_B > 100:
         speed_B = 100
         print("\x1b[33mLa velocitat màxima és 100.\x1b[0m")
+    if speed_B < -100:
+        speed_B = -100
+        print("\x1b[33mLa velocitat màxima és 100.\x1b[0m")
     if speed_C > 100:
         speed_C = 100
+        print("\x1b[33mLa velocitat màxima és 100.\x1b[0m")
+    if speed_C < -100:
+        speed_C = -100
         print("\x1b[33mLa velocitat màxima és 100.\x1b[0m")
     try:
         mB.run(-int(speed_B*max_speed/100))
@@ -100,4 +106,14 @@ def play_tone(f,t):
         brick.play_tone_and_wait(f, int(t*1000*tempo))
         time.sleep(0.01)
     except:
+        pass
+
+from IPython.display import clear_output
+
+def read_and_print(sensor):
+    try:
+        while True:
+            clear_output(wait=True)
+            print(sensor())
+    except KeyboardInterrupt:
         pass
