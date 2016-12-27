@@ -19,6 +19,7 @@ def connect(n):
         mC = nxt.motor.Motor(brick, nxt.motor.PORT_C)
         s1 = nxt.sensor.Touch(brick, nxt.sensor.PORT_1)
         s2 = nxt.sensor.Sound(brick, nxt.sensor.PORT_2)
+        s2.set_input_mode(0x08,0x80) # dB adjusted, percentage
         s3 = nxt.sensor.Light(brick, nxt.sensor.PORT_3)
         s3.set_illuminated(True)
         s3.set_input_mode(0x05,0x80) # Light active, percentage
@@ -96,9 +97,19 @@ def sound():
 def light():
     return s3.get_lightness()
 
-def ultrasonic():
-    return s4.get_distance()
+from nxt.telegram import InvalidOpcodeError, InvalidReplyError
 
+def ultrasonic():
+    global s4
+    try:
+        return s4.get_distance()
+    except (InvalidOpcodeError, InvalidReplyError):
+        disconnect()
+        print("\x1b[33mError de connexió, reintentant...\x1b[0m")
+        time.sleep(1)
+        connect(connected_robot)
+        return s4.get_distance()
+        
 def play_sound(s):
     brick.play_sound_file(False, bytes((s+'.rso').encode('ascii')))
 
@@ -119,5 +130,13 @@ def read_and_print(sensor):
         while True:
             clear_output(wait=True)
             print(sensor())
+    except KeyboardInterrupt:
+        pass
+    
+def test_sensors():
+    try:
+        while True:
+            clear_output(wait=True)
+            print("     Touch: %d\n     Light: %d\n     Sound: %d\nUltrasonic: %d" % (touch(),light(),sound(), ultrasonic()))
     except KeyboardInterrupt:
         pass
