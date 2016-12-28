@@ -63,8 +63,14 @@ def backward(speed=100,speed_B=100,speed_C=100):
 def left(speed=100):
     move(speed_B=0,speed_C=abs(speed))
 
+def left_sharp(speed=100):
+    move(speed_B=-abs(speed),speed_C=abs(speed))
+       
 def right(speed=100):
     move(speed_B=abs(speed),speed_C=0)
+
+def right_sharp(speed=100):
+    move(speed_B=abs(speed),speed_C=-abs(speed))
 
 def move(speed_B=0,speed_C=0):
     max_speed = 100
@@ -140,3 +146,9 @@ def test_sensors():
             print("     Touch: %d\n     Light: %d\n     Sound: %d\nUltrasonic: %d" % (touch(),light(),sound(), ultrasonic()))
     except KeyboardInterrupt:
         pass
+    
+import matplotlib.pyplot as plt
+
+def plot(l):
+    plt.plot(l)
+    
