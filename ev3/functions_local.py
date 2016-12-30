@@ -11,28 +11,28 @@ def configure(n):
     shutil.copyfile('./functions.py', '../task/functions.py')
     print("\x1b[32mConfiguració completa, podeu continuar.\x1b[0m")
 
-import rpyc
-import socket
+#import rpyc
+#import socket
+import ev3dev.ev3 as ev3
 
 def connect():
-    global conn
-    global ev3
+    #global conn
+    #global ev3
     global mB; global mC
     global ts; global gy; global us; global cl; global so
     global snd
     global tempo
-    global connected_robot
-    with open('robot_config.json', 'r') as f:
-         config = json.load(f)
-    n = config['number']
+    #global connected_robot
+    #with open('robot_config.json', 'r') as f:
+    #     config = json.load(f)
+    #n = config['number']
     try:
-        address = {1: '192.168.1.27'}
-        conn = rpyc.classic.connect(address[n]) 
-        ev3 = conn.modules['ev3dev.ev3']
+        #address = {1: '192.168.1.27'}
+        #conn = rpyc.classic.connect(address[n]) 
+        #ev3 = conn.modules['ev3dev.ev3']
         mB = ev3.LargeMotor('outB')
         mC = ev3.LargeMotor('outC')
         ts = ev3.TouchSensor()
-        # echo 'lego-nxt-sound' > /sys/class/lego_port/port1/set_device
         so = ev3.SoundSensor('in2')
         so.mode='DB'
         us = ev3.UltrasonicSensor()
@@ -41,8 +41,8 @@ def connect():
         cl.mode='COL-REFLECT'
         snd = ev3.Sound()
         tempo = 0.25
-        connected_robot = n
-        print("\x1b[32mRobot %d connectat.\x1b[0m" % n)
+        #connected_robot = n
+        print("\x1b[32mRobot connectat.\x1b[0m")
     except KeyError:
         print("\x1b[31mNúmero de robot incorrecte.\x1b[0m")
     except ConnectionRefusedError:
@@ -54,8 +54,8 @@ def connect():
 
 def disconnect():
     try:
-        conn.close()
-        print("\x1b[32mRobot %d desconnectat.\x1b[0m" % connected_robot)
+        #conn.close()
+        print("\x1b[32mRobot desconnectat.\x1b[0m")
     except NameError:
         print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
 
