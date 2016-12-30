@@ -1,28 +1,12 @@
-import json
-import shutil
-
-def configure(n):
-    config = {
-        'version' : 'ev3',
-        'number' : n
-    }
-    with open('../task/robot_config.json', 'w') as f:
-        json.dump(config, f)
-    shutil.copyfile('./functions.py', '../task/functions.py')
-    print("\x1b[32mConfiguració completa, podeu continuar.\x1b[0m")
-
 import rpyc
-    
-def connect():
+
+def connect(n):
     global conn
     global ev3
     global mB; global mC
     global ts; global gy; global us; global cl
     global snd
     global tempo
-    with open('robot_config.json', 'r') as f:
-         config = json.load(f)
-    n = config['number']
     try:
         address = {1: '192.168.1.27'}
         conn = rpyc.classic.connect(address[n]) 
@@ -43,9 +27,6 @@ def connect():
         print("\x1b[31mNúmero de robot incorrecte.\x1b[0m")
     except ConnectionRefusedError:
         print("\x1b[31mNo es pot connectar amb el robot.\x1b[0m")
-
-def disconnect():
-    pass
 
 def stop():
     try:

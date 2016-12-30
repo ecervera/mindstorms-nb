@@ -1,16 +1,3 @@
-import json
-import shutil
-
-def configure(n):
-    config = {
-        'version' : 'nxt',
-        'number' : n
-    }
-    with open('../task/robot_config.json', 'w') as f:
-        json.dump(config, f)
-    shutil.copyfile('./functions.py', '../task/functions.py')
-    print("\x1b[32mConfiguració completa, podeu continuar.\x1b[0m")
-    
 import nxt.bluesock
 import nxt.motor
 
@@ -19,15 +6,12 @@ import time
 
 from bluetooth.btcommon import BluetoothError
 
-def connect():
+def connect(n):
     global brick
     global mB; global mC
     global s1; global s2; global s3; global s4
     global tempo
     global connected_robot
-    with open('robot_config.json', 'r') as f:
-         config = json.load(f)
-    n = config['number']
     try:
         address = {5: '00:16:53:08:D5:59', 12: '00:16:53:1A:C6:BD'}
         brick = nxt.bluesock.BlueSock(address[n]).connect()
@@ -35,10 +19,8 @@ def connect():
         mC = nxt.motor.Motor(brick, nxt.motor.PORT_C)
         s1 = nxt.sensor.Touch(brick, nxt.sensor.PORT_1)
         s2 = nxt.sensor.Sound(brick, nxt.sensor.PORT_2)
-        s2.set_input_mode(0x08,0x80) # dB adjusted, percentage
         s3 = nxt.sensor.Light(brick, nxt.sensor.PORT_3)
         s3.set_illuminated(True)
-        s3.set_input_mode(0x05,0x80) # Light active, percentage
         s4 = nxt.sensor.Ultrasonic(brick, nxt.sensor.PORT_4)
         tempo = 0.5
         connected_robot = n
@@ -79,14 +61,8 @@ def backward(speed=100,speed_B=100,speed_C=100):
 def left(speed=100):
     move(speed_B=0,speed_C=abs(speed))
 
-def left_sharp(speed=100):
-    move(speed_B=-abs(speed),speed_C=abs(speed))
-       
 def right(speed=100):
     move(speed_B=abs(speed),speed_C=0)
-
-def right_sharp(speed=100):
-    move(speed_B=abs(speed),speed_C=-abs(speed))
 
 def move(speed_B=0,speed_C=0):
     max_speed = 100
@@ -119,19 +95,9 @@ def sound():
 def light():
     return s3.get_lightness()
 
-from nxt.telegram import InvalidOpcodeError, InvalidReplyError
-
 def ultrasonic():
-    global s4
-    try:
-        return s4.get_distance()
-    except (InvalidOpcodeError, InvalidReplyError):
-        disconnect()
-        print("\x1b[33mError de connexió, reintentant...\x1b[0m")
-        time.sleep(1)
-        connect(connected_robot)
-        return s4.get_distance()
-        
+    return s4.get_distance()
+
 def play_sound(s):
     brick.play_sound_file(False, bytes((s+'.rso').encode('ascii')))
 
@@ -154,17 +120,3 @@ def read_and_print(sensor):
             print(sensor())
     except KeyboardInterrupt:
         pass
-    
-def test_sensors():
-    try:
-        while True:
-            clear_output(wait=True)
-            print("     Touch: %d\n     Light: %d\n     Sound: %d\nUltrasonic: %d" % (touch(),light(),sound(), ultrasonic()))
-    except KeyboardInterrupt:
-        pass
-    
-import matplotlib.pyplot as plt
-
-def plot(l):
-    plt.plot(l)
-    
