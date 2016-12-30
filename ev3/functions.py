@@ -17,7 +17,7 @@ def connect():
     global conn
     global ev3
     global mB; global mC
-    global ts; global gy; global us; global cl
+    global ts; global gy; global us; global cl; global so
     global snd
     global tempo
     global connected_robot
@@ -31,8 +31,11 @@ def connect():
         mB = ev3.LargeMotor('outB')
         mC = ev3.LargeMotor('outC')
         ts = ev3.TouchSensor()
-        gy = ev3.GyroSensor()
-        gy.mode='GYRO-ANG'
+        #gy = ev3.GyroSensor()
+        #gy.mode='GYRO-ANG'
+        #so = ev3.Sensor('in2')
+        so = ev3.SoundSensor('in2')
+        so.mode='DB'
         us = ev3.UltrasonicSensor()
         us.mode='US-DIST-CM'
         cl = ev3.ColorSensor()
@@ -89,10 +92,13 @@ def move(speed_B=0,speed_C=0):
         print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
     
 def touch():
-    return ts.value()
+    return bool(ts.value())
 
-def gyro():
-    return gy.value()
+#def gyro():
+#    return gy.value()
+
+def sound():
+    return so.value()/10
 
 def ultrasonic():
     return us.value()/10
