@@ -1,0 +1,4 @@
+for f in *.ipynb
+do
+  jupyter nbconvert --to notebook --nbformat 3 $f --output $f
+done
