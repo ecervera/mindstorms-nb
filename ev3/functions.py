@@ -20,6 +20,7 @@ def connect():
     global ts; global gy; global us; global cl
     global snd
     global tempo
+    global connected_robot
     with open('robot_config.json', 'r') as f:
          config = json.load(f)
     n = config['number']
@@ -38,6 +39,7 @@ def connect():
         cl.mode='COL-REFLECT'
         snd = ev3.Sound()
         tempo = 0.25
+        connected_robot = n
         print("\x1b[32mRobot %d connectat.\x1b[0m" % n)
     except KeyError:
         print("\x1b[31mNúmero de robot incorrecte.\x1b[0m")
@@ -45,13 +47,17 @@ def connect():
         print("\x1b[31mNo es pot connectar amb el robot.\x1b[0m")
 
 def disconnect():
-    pass
+    try:
+        conn.close()
+        print("\x1b[32mRobot %d desconnectat.\x1b[0m" % connected_robot)
+    except NameError:
+        print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
 
 def stop():
     try:
         mB.stop(stop_action="brake")
         mC.stop(stop_action="brake")
-    except NameError:
+    except (NameError,EOFError):
         print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
 
 def forward(speed=100):
@@ -79,7 +85,7 @@ def move(speed_B=0,speed_C=0):
     try:
         mB.run_forever(speed_sp=int(speed_B*max_speed/100))
         mC.run_forever(speed_sp=int(speed_C*max_speed/100))
-    except NameError:
+    except (NameError,EOFError):
         print("\x1b[31mNo hi ha connexió amb el robot.\x1b[0m")
     
 def touch():
