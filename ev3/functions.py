@@ -31,9 +31,7 @@ def connect():
         mB = ev3.LargeMotor('outB')
         mC = ev3.LargeMotor('outC')
         ts = ev3.TouchSensor()
-        #gy = ev3.GyroSensor()
-        #gy.mode='GYRO-ANG'
-        #so = ev3.Sensor('in2')
+        # echo 'lego-nxt-sound' > /sys/class/lego_port/port1/set_device
         so = ev3.SoundSensor('in2')
         so.mode='DB'
         us = ev3.UltrasonicSensor()
@@ -98,7 +96,7 @@ def touch():
 #    return gy.value()
 
 def sound():
-    return so.value()/10
+    return int(100-so.value()/10)
 
 def ultrasonic():
     return us.value()/10
