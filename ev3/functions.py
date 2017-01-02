@@ -26,7 +26,11 @@ def connect():
          config = json.load(f)
     n = config['number']
     try:
-        address = {1: '192.168.1.27'}
+        address = {1: '192.168.0.204',\
+		   2: '192.168.0.212',\
+		   3: '192.168.0.213',\
+		   4: '192.168.0.205',\
+		   5: '192.168.0.202'}
         conn = rpyc.classic.connect(address[n]) 
         ev3 = conn.modules['ev3dev.ev3']
         mB = ev3.LargeMotor('outB')

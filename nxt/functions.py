@@ -29,7 +29,17 @@ def connect():
          config = json.load(f)
     n = config['number']
     try:
-        address = {5: '00:16:53:08:D5:59', 12: '00:16:53:1A:C6:BD'}
+        address = {2: '00:16:53:0A:9B:72', \
+		   3: '00:16:53:0A:9D:F2', \
+		   4: '00:16:53:0A:5C:72', 
+		   5: '00:16:53:08:D5:59', \
+		   6: '00:16:53:08:DE:51', \
+		   7: '00:16:53:0A:5A:B4', \
+		   8: '00:16:53:0A:9B:27', \
+		   9: '00:16:53:0A:9E:2C', \
+		  10: '00:16:53:17:92:8A', \
+		  11: '00:16:53:17:94:E0', \
+		  12: '00:16:53:1A:C6:BD'}
         brick = nxt.bluesock.BlueSock(address[n]).connect()
         mB = nxt.motor.Motor(brick, nxt.motor.PORT_B)
         mC = nxt.motor.Motor(brick, nxt.motor.PORT_C)
