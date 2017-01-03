@@ -62,7 +62,7 @@ Switch it on, that's all!
 
 Download, run `jupyter notebook index.ipynb` in the root folder, and enjoy!
 
-### Try-a-Bot: an open source guide for robot programming
+## Try-a-Bot: an open source guide for robot programming
 
 Developed by:
 [![Robotic Intelligence Lab @ UJI](img/logo/robinlab.png "Robotic Intelligence Lab @ UJI")](http://robinlab.uji.es)
