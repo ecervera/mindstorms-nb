@@ -1,6 +1,8 @@
 import json
 import shutil
 
+from IPython.core.display import display, HTML
+
 def configure(n):
     config = {
         'version' : 'ev3',
@@ -9,7 +11,13 @@ def configure(n):
     with open('../task/robot_config.json', 'w') as f:
         json.dump(config, f)
     shutil.copyfile('./functions.py', '../task/functions.py')
-    print("\x1b[32mConfiguració completa, podeu continuar.\x1b[0m")
+    print("\x1b[32mConfiguració completa.\x1b[0m")
+
+    display(HTML('<p>Ara ja podeu continuar, començant la primera tasca de programació: provareu el robot a vore si respon i es mou correctament.</p><h2><a href="../task/index.ipynb" target="_blank">&gt;&gt;&gt; Prova de connexió</a></h2>'))
+
+def next_notebook(nb):
+    if nb=='moviments':
+        display(HTML('<p>Ja podeu passar a la pàgina següent, on aprendreu a controlar els moviments del robot:</p><h2><a href="motors.ipynb" target="_blank">&gt;&gt;&gt; Moviments del robot</a></h2>'))
 
 import rpyc
 import socket
