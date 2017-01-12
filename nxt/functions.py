@@ -1,6 +1,8 @@
 import json
 import shutil
 
+from IPython.core.display import display, HTML
+
 def configure(n):
     config = {
         'version' : 'nxt',
@@ -10,7 +12,30 @@ def configure(n):
         json.dump(config, f)
     shutil.copyfile('./functions.py', '../task/functions.py')
     print("\x1b[32mConfiguració completa, podeu continuar.\x1b[0m")
+    display(HTML('<p>Ara ja podeu continuar, començant la primera tasca de programació: provareu el robot a vore si respon i es mou correctament.</p><h2><a href="../task/index.ipynb" target="_blank">&gt;&gt;&gt; Prova de connexió</a></h2>'))
     
+def next_notebook(nb):
+    if nb=='moviments':
+        display(HTML('<p>Ja podeu passar a la pàgina següent, on aprendreu a controlar els moviments del robot:</p><h2><a href="motors.ipynb" target="_blank">&gt;&gt;&gt; Moviments del robot</a></h2>'))
+    elif nb=='quadrat':
+        display(HTML('<p>Ara ja podeu continuar, bona sort!</p><h2><a href="quadrat.ipynb" target="_blank">&gt;&gt;&gt; Exercici de moviment</a></h2>'))
+    elif nb=='sensors':
+        display(HTML('<p>Fins ara heu aprés a controlar el moviment del robot, i també a programar bucles, no està gens malament!</p><p>Per a continuar, anem a vore els altres components del robot, els sensors, que ens permetran fer programes encara més sofisticats.</p><h2><a href="sensors.ipynb" target="_blank">&gt;&gt;&gt; Sensors</a></h2>'))
+    elif nb=='touch':
+        display(HTML('<p>Ara ja podeu passar al primer exercici amb sensors:</p><h2><a href="touch.ipynb" target="_blank">&gt;&gt;&gt; Tacte</a></h2>'))
+    elif nb=='navigation':
+        display(HTML('<p>Ara ja podeu continuar.</p><h2><a href="navigation.ipynb" target="_blank">&gt;&gt;&gt; Exercici de navegació</a></h2>'))
+    elif nb=='sound':
+        display(HTML('<p>Ara ja podeu continuar.</p><h2><a href="sound.ipynb" target="_blank">&gt;&gt;&gt; Sensor de so</a></h2>'))
+    elif nb=='light':
+        display(HTML('<p>Ara ja podeu continuar.</p><h2><a href="light.ipynb" target="_blank">&gt;&gt;&gt; Sensor de llum</a></h2>'))
+    elif nb=='ultrasonic':
+        display(HTML('<p>Ara ja podeu continuar.</p><h2><a href="ultrasonic.ipynb" target="_blank">&gt;&gt;&gt; Sensor ultrasònic</a></h2>'))
+    elif nb=='sumo':
+        display(HTML('<p>Ara ja podeu continuar.</p><h2><a href="sumo.ipynb" target="_blank">&gt;&gt;&gt; El Gran Repte</a></h2>'))
+    else:
+        pass
+
 import nxt.bluesock
 import nxt.motor
 
